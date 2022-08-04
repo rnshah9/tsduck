@@ -77,20 +77,13 @@ Options::Options(int argc, char *argv[]) :
 {
     duck.defineArgsForStandards(*this);
     duck.defineArgsForTimeReference(*this);
+    ts::DefineTSPacketFormatInputOption(*this, 'f');
 
     option(u"", 0, FILENAME, 0, 1);
     help(u"", u"MPEG capture file (standard input if omitted).");
 
     option(u"all", 'a');
     help(u"all", u"Report all TDT/TOT tables (default: report only the first table of each type).");
-
-    option(u"format", 'f', ts::TSPacketFormatEnum);
-    help(u"format", u"name",
-         u"Specify the format of the input file. "
-         u"By default, the format is automatically detected. "
-         u"But the auto-detection may fail in some cases "
-         u"(for instance when the first time-stamp of an M2TS file starts with 0x47). "
-         u"Using this option forces a specific format.");
 
     option(u"notdt", 0);
     help(u"notdt", u"Ignore Time & Date Table (TDT).");
@@ -106,7 +99,7 @@ Options::Options(int argc, char *argv[]) :
     all = present(u"all");
     no_tdt = present(u"notdt");
     no_tot = present(u"notot");
-    getIntValue(format, u"format", ts::TSPacketFormat::AUTODETECT);
+    format = ts::LoadTSPacketFormatInputOption(*this);
 
     exitOnError();
 }
@@ -185,17 +178,17 @@ void TableHandler::handleTable(ts::SectionDemux&, const ts::BinaryTable& table)
                 break;
             }
             std::cout << "* TOT UTC time: " << tot.utc_time << std::endl;
-            for (ts::TOT::RegionVector::const_iterator it = tot.regions.begin(); it != tot.regions.end(); ++it) {
-                std::cout << "  Country: " << it->country
-                          << ", region: " << it->region_id
+            for (const auto& region : tot.regions) {
+                std::cout << "  Country: " << region.country
+                          << ", region: " << region.region_id
                           << std::endl
-                          << "  Local time:   " << tot.localTime(*it)
+                          << "  Local time:   " << tot.localTime(region)
                           << ", local time offset: "
-                          << ts::TOT::timeOffsetFormat(it->time_offset)
+                          << ts::TOT::timeOffsetFormat(region.time_offset)
                           << std::endl
-                          << "  Next change:  " << it->next_change
+                          << "  Next change:  " << region.next_change
                           << ", next time offset:  "
-                          << ts::TOT::timeOffsetFormat(it->next_time_offset)
+                          << ts::TOT::timeOffsetFormat(region.next_time_offset)
                           << std::endl;
             }
             break;
