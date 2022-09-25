@@ -29,9 +29,6 @@
 
 #include "tsIPUtils.h"
 #include "tsIPv4Address.h"
-#if defined(TS_MAC)
-#include <ifaddrs.h>
-#endif
 
 
 //----------------------------------------------------------------------------

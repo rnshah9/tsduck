@@ -190,12 +190,10 @@ const ts::NamesFile* ts::NamesFile::Instance(Predefined index)
         return nullptr; // and the application will likely crash...
     }
     Predef* pr = PredefData + size_t(index);
-    if (pr->instance != nullptr) {
-        return pr->instance;
+    if (pr->instance == nullptr) {
+        pr->instance = AllInstances::Instance()->getFile(pr->name, pr->merge);
     }
-    else {
-        return pr->instance = AllInstances::Instance()->getFile(pr->name, pr->merge);
-    }
+    return pr->instance;
 }
 
 void ts::NamesFile::DeleteInstance(Predefined index)
@@ -295,7 +293,7 @@ void ts::NamesFile::loadFile(const UString& fileName)
             line.convertToLower();
 
             // Get or create associated section.
-            ConfigSectionMap::iterator it = _sections.find(line);
+            auto it = _sections.find(line);
             if (it != _sections.end()) {
                 section = it->second;
             }

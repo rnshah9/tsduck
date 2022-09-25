@@ -30,6 +30,17 @@
 #include "tsMonotonic.h"
 #include "tsFileUtils.h"
 
+#if defined(TS_WINDOWS)
+    #include "tsBeforeStandardHeaders.h"
+    #include <mmsystem.h>
+    #include "tsAfterStandardHeaders.h"
+#endif
+
+// Required link libraries under Windows.
+#if defined(TS_WINDOWS) && defined(TS_MSC)
+    #pragma comment(lib, "winmm.lib") // timeBeginPeriod
+#endif
+
 
 //----------------------------------------------------------------------------
 // Constructors and destructors.

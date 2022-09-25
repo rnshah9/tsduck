@@ -54,7 +54,6 @@ constexpr size_t ts::TablesLogger::DEFAULT_LOG_SIZE;
 //----------------------------------------------------------------------------
 
 ts::TablesLogger::TablesLogger(TablesDisplay& display) :
-    ArgsSupplierInterface(),
     TableHandlerInterface(),
     SectionHandlerInterface(),
     _use_text(false),
@@ -1046,9 +1045,9 @@ bool ts::TablesLogger::AnalyzeUDPMessage(const uint8_t* data, size_t size, bool 
 
     // Set the PID in all sections.
     if (pid.set()) {
-        for (SectionPtrVector::const_iterator it = sections.begin(); it != sections.end(); ++it) {
-            if (!it->isNull()) {
-                (*it)->setSourcePID(pid.value());
+        for (auto& it : sections) {
+            if (!it.isNull()) {
+                it->setSourcePID(pid.value());
             }
         }
     }

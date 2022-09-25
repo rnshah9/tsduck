@@ -2,6 +2,23 @@ TSDUCK CHANGE LOG AND RELEASE NOTES
 
 -------------------------------------------------------------------------------
 
+VERSION 3.32-2803
+
+[NEW] New commands and plugins:
+
+  * Added command "tsvatek" and output plugin "vatek" to handle modulators
+    based on VATek chips.
+
+[IMP] Improvements on existing commands and plugins:
+
+  * In "mpeinject" plugin, it is now possible to multiplex several input UDP
+    stream into one single output MPE PID.
+  * New options in existing commands and plugins:
+    - Options --alt-group-id, --alt-language, --alt-name, --alt-type in input
+      plugin "hls".
+
+-------------------------------------------------------------------------------
+
 VERSION 3.31-2754
 
 [IMP] Improvements on existing commands and plugins:

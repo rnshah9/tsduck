@@ -28,43 +28,33 @@
 //----------------------------------------------------------------------------
 //!
 //!  @file
-//!  An interface which is used to add options in an Args structure.
+//!  @ingroup net
+//!  Include the multiple and messy system headers for IP networking.
 //!
 //----------------------------------------------------------------------------
 
 #pragma once
 #include "tsPlatform.h"
 
-namespace ts {
-
-    class Args;
-    class DuckContext;
-
-    //!
-    //! An interface which is used to add options in an Args structure.
-    //! @ingroup cmd
-    //!
-    class TSDUCKDLL ArgsSupplierInterface
-    {
-    public:
-        //!
-        //! Add command line option definitions in an Args.
-        //! @param [in,out] args Command line arguments to update.
-        //!
-        virtual void defineArgs(Args& args) = 0;
-
-        //!
-        //! Load arguments from command line.
-        //! Args error indicator is set in case of incorrect arguments.
-        //! @param [in,out] duck TSDuck execution context.
-        //! @param [in,out] args Command line arguments.
-        //! @return True on success, false on error in argument line.
-        //!
-        virtual bool loadArgs(DuckContext& duck, Args& args) = 0;
-
-        //!
-        //! Virtual destructor.
-        //!
-        virtual ~ArgsSupplierInterface();
-    };
-}
+#if defined(TS_WINDOWS)
+    #include "tsBeforeStandardHeaders.h"
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #include <mswsock.h>
+    #include "tsAfterStandardHeaders.h"
+    #if defined(TS_MSC)
+        #pragma comment(lib, "ws2_32.lib")
+    #endif
+#else
+    #include "tsBeforeStandardHeaders.h"
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <net/if.h>
+    #include <netinet/in.h>
+    #include <netinet/tcp.h>
+    #include <netdb.h>
+    #if defined(TS_MAC)
+        #include <ifaddrs.h>
+    #endif
+    #include "tsAfterStandardHeaders.h"
+#endif

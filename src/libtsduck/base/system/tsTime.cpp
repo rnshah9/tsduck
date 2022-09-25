@@ -31,6 +31,13 @@
 #include "tsMemory.h"
 #include "tsTimeConfigurationFile.h"
 
+#if defined(TS_UNIX)
+    #include "tsBeforeStandardHeaders.h"
+    #include <sys/time.h>
+    #include <time.h>
+    #include "tsAfterStandardHeaders.h"
+#endif
+
 
 //----------------------------------------------------------------------------
 // Epochs
@@ -114,13 +121,6 @@ bool ts::Time::Fields::operator== (const Fields& f) const
     return year == f.year && month == f.month && day == f.day &&
            hour == f.hour && minute == f.minute && second == f.second &&
            millisecond == f.millisecond;
-}
-
-bool ts::Time::Fields::operator!= (const Fields& f) const
-{
-    return year != f.year || month != f.month || day != f.day ||
-           hour != f.hour || minute != f.minute || second != f.second ||
-           millisecond != f.millisecond;
 }
 
 

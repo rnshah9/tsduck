@@ -46,7 +46,15 @@
 #include "tsWebRequest.h"
 #include "tsSysUtils.h"
 #include "tsWinUtils.h"
+
+#include "tsBeforeStandardHeaders.h"
 #include <WinInet.h>
+#include "tsAfterStandardHeaders.h"
+
+// Required link libraries.
+#if defined(TS_MSC)
+    #pragma comment(lib, "Wininet.lib")
+#endif
 
 
 //----------------------------------------------------------------------------
@@ -173,7 +181,8 @@ void ts::WebRequest::SystemGuts::clear()
     if (_inet != 0 && !::InternetCloseHandle(_inet)) {
         error(u"error closing main Internet handle");
     }
-    _url = _inet = 0;
+    _url = nullptr;
+    _inet = nullptr;
 }
 
 

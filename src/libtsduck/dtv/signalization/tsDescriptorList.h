@@ -133,15 +133,14 @@ namespace ts {
         //!
         bool operator==(const DescriptorList& other) const;
 
+#if defined(TS_NEED_UNEQUAL_OPERATOR)
         //!
         //! Comparison operator.
         //! @param [in] other Another instance to compare.
         //! @return True if the two descriptor lists are different.
         //!
-        bool operator!=(const DescriptorList& other) const
-        {
-            return !(*this == other);
-        }
+        bool operator!=(const DescriptorList& other) const { return !operator==(other); }
+#endif
 
         //!
         //! Get a reference to the descriptor at a specified index.
@@ -439,7 +438,7 @@ namespace ts {
         // Prepare removal of a private_data_specifier descriptor.
         // Return true if can be removed, false if it cannot (private descriptors ahead).
         // When it can be removed, the current PDS of all subsequent descriptors is updated.
-        bool prepareRemovePDS(const ElementVector::iterator&);
+        bool prepareRemovePDS(ElementVector::iterator);
 
         // Inaccessible operations.
         DescriptorList() = delete;

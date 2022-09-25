@@ -27,8 +27,51 @@
 //
 //----------------------------------------------------------------------------
 
-#include "tsArgsSupplierInterface.h"
+#include "tshlsAltPlayList.h"
 
-ts::ArgsSupplierInterface::~ArgsSupplierInterface()
+
+//----------------------------------------------------------------------------
+// Constructor.
+//----------------------------------------------------------------------------
+
+ts::hls::AltPlayList::AltPlayList() :
+    MediaElement(),
+    isDefault(false),
+    autoselect(false),
+    forced(false),
+    name(),
+    type(),
+    groupId(),
+    stableRenditionId(),
+    language(),
+    assocLanguage(),
+    inStreamId(),
+    characteristics(),
+    channels()
 {
+}
+
+
+//----------------------------------------------------------------------------
+// Implementation of StringifyInterface
+//----------------------------------------------------------------------------
+
+ts::UString ts::hls::AltPlayList::toString() const
+{
+    UString str(MediaElement::toString());
+
+    if (!type.empty()) {
+        str.format(u", type: %s", {type});
+    }
+    if (!name.empty()) {
+        str.format(u", name: %s", {name});
+    }
+    if (!groupId.empty()) {
+        str.format(u", group id: %s", {groupId});
+    }
+    if (!language.empty()) {
+        str.format(u", language: %s", {language});
+    }
+
+    return str;
 }

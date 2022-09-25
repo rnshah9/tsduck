@@ -34,9 +34,16 @@
 //----------------------------------------------------------------------------
 
 #pragma once
-#include "tsEnumeration.h"
 #include "tsStandards.h"
+#include "tsEnumeration.h"
 #include "tsStringifyInterface.h"
+
+#if defined(TS_LINUX)
+    #include "tsBeforeStandardHeaders.h"
+    #include <linux/dvb/frontend.h>
+    #include <linux/version.h>
+    #include "tsAfterStandardHeaders.h"
+#endif
 
 namespace ts {
     //!
